@@ -8,9 +8,31 @@ definePageMeta({
 
 const username = ref('')
 const password = ref('')
+const loading = ref(false)
+const { toasts, showToast, removeToast, addToast, ToastType } = useToast()
 
-const handleLogin = async () => {
-  loginWithUserName(username.value, password.value)
+const handleLogin = async (username: string, password: string) => {
+  loading.value = true
+  try {
+    const { data: user, error } = await useFetch('/api/auth/login', {
+      method: 'POST',
+      body: { username, password },
+      server: false,
+      key: username + password,
+    })
+
+    if (user.value) {
+      useState('user').value = user
+      await useRouter().push('/')
+    }
+    else { throw error }
+  }
+  catch (error: any) {
+    addToast(ToastType.Error, error.value.statusMessage)
+  }
+  finally {
+    loading.value = false
+  }
 }
 </script>
 
@@ -23,7 +45,7 @@ const handleLogin = async () => {
             <h5>Login with</h5>
           </div>
           <div class="flex-auto p-6">
-            <form role="form text-left" @submit.prevent="handleLogin()">
+            <form role="form text-left" @submit.prevent="handleLogin(username, password)">
               <div class="mb-4">
                 <input v-model="username" type="text" class="text-sm focus:shadow-soft-primary-outline leading-5.6 ease-soft block w-full appearance-none rounded-lg border border-solid border-gray-300 bg-white bg-clip-padding py-2 px-3 font-normal text-gray-700 transition-all focus:border-fuchsia-300 focus:bg-white focus:text-gray-700 focus:outline-none focus:transition-shadow" placeholder="username" aria-label="username" aria-describedby="username-addon">
               </div>
@@ -40,6 +62,15 @@ const handleLogin = async () => {
         </div>
       </div>
     </div>
+    <Transition>
+      <div v-if="showToast" class="fixed w-full max-w-md space-y-3 right-4 top-4 z-99">
+        <TransitionGroup name="list">
+          <Toast v-for="(toast, index) in toasts" :key="toast.index" :type="toast.type" @close="removeToast(index)">
+            {{ toast.message }}
+          </Toast>
+        </TransitionGroup>
+      </div>
+    </Transition>
   </div>
 </template>
 
