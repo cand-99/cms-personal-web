@@ -6,6 +6,7 @@ export default defineNuxtConfig({
     'nuxt-icon',
     '@vueuse/nuxt',
     '@unocss/nuxt',
+    'nuxt-headlessui',
   ],
 
   // pwa config
@@ -22,6 +23,10 @@ export default defineNuxtConfig({
       name: 'CMS Personal Web',
       lang: 'en',
     },
+  },
+
+  headlessui: {
+    prefix: '',
   },
 
   app: {

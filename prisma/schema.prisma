@@ -11,12 +11,12 @@ datasource db {
 }
 
 model User {
-  id        String         @id @default(auto()) @map("_id") @db.ObjectId
-  username  String         @unique
+  id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  username  String    @unique
   password  String
   name      String?
   session   Session[]
-  createdAt DateTime       @default(now())
+  createdAt DateTime  @default(now())
 }
 
 model Session {
@@ -26,4 +26,25 @@ model Session {
   userId    String   @db.ObjectId
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model Project {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  image         String
+  description   String
+  dateStart     String
+  dateEnd       String
+  technologyIDs String[]     @db.ObjectId
+  technology    Technology[] @relation(fields: [technologyIDs], references: [id])
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+}
+
+model Technology {
+  id          String    @id @default(auto()) @map("_id") @db.ObjectId
+  icon        String
+  name        String
+  projectsIDs String[]  @db.ObjectId
+  project     Project[] @relation(fields: [projectsIDs], references: [id])
 }
