@@ -8,15 +8,15 @@ useHead({
   title: 'Technology',
 })
 const loading = ref(false)
-const name = ref('')
-const icon = ref('')
+const iconName = ref('')
+const iconId = ref('')
 const clearForm = () => {
-  name.value = ''
-  icon.value = ''
+  iconName.value = ''
+  iconId.value = ''
 }
 const { toasts, showToast, removeToast, addToast, ToastType } = useToast()
 
-const { data: icons, error, refresh } = await useFetch<ITechnology[]>('/api/technology')
+const { data: icons, refresh } = await useFetch<ITechnology[]>('/api/technology')
 
 const isOpen = ref(false)
 function closeModal() {
@@ -26,12 +26,12 @@ function openModal() {
   isOpen.value = true
 }
 
-const addTechnology = async (icon: string, name: string) => {
+const addTechnology = async (iconId: string, name: string) => {
   loading.value = true
   try {
     const { data, error } = await useFetch('/api/technology', {
       method: 'POST',
-      body: { icon, name },
+      body: { icon: iconId, name },
     })
     if (data.value) {
       refresh()
@@ -50,6 +50,31 @@ const addTechnology = async (icon: string, name: string) => {
     loading.value = false
   }
 }
+
+const deleteTechnology = async (technologyId: string | undefined) => {
+  loading.value = true
+  try {
+    const { data, error } = await useFetch('/api/technology', {
+      method: 'DELETE',
+      query: {
+        id: technologyId,
+      },
+    })
+    if (data.value) {
+      refresh()
+      clearForm()
+      addToast(ToastType.Error, 'Technology Deleted')
+    }
+    else { throw error }
+  }
+  catch (error: any) {
+    console.error(error)
+    addToast(ToastType.Error, error.value.statusMessage)
+  }
+  finally {
+    loading.value = false
+  }
+}
 </script>
 
 <template>
@@ -60,9 +85,71 @@ const addTechnology = async (icon: string, name: string) => {
       </button>
     </div>
 
-    <div v-for="(icon, index) in icons" :key="index" class="mt-4">
-      <p>name: {{ icon.name }}</p>
-      <Icon :name="icon.icon" />
+    <div class="flex space-x-4">
+      <div v-for="(icon, index) in icons" :key="index" class="mt-4 text-4xl hover:text-green text-center">
+        <ClientOnly>
+          <Menu as="div" class="relative inline-block text-left">
+            <div>
+              <MenuButton>
+                <Icon :name="icon.icon" />
+
+                <p class="text-xs">
+                  {{ icon.name }}
+                </p>
+              </MenuButton>
+            </div>
+            <transition
+              enter-active-class="transition duration-100 ease-out"
+              enter-from-class="transform scale-95 opacity-0"
+              enter-to-class="transform scale-100 opacity-100"
+              leave-active-class="transition duration-75 ease-in"
+              leave-from-class="transform scale-100 opacity-100"
+              leave-to-class="transform scale-95 opacity-0"
+            >
+              <MenuItems
+                class="absolute left-0 mt-2 w-56 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              >
+                <div class="px-1 py-1">
+                  <MenuItem v-slot="{ active }" @click="deleteTechnology(icon.id)">
+                    <button
+                      class="group flex w-full items-center rounded-md px-2 py-2 text-sm" :class="[
+                        active ? 'bg-light-primary text-white' : 'text-gray-900',
+                      ]"
+                    >
+                      <Icon
+                        name="material-symbols:delete-outline-rounded"
+                        :class="[
+                          active ? 'bg-light-primary text-white' : 'text-red-500',
+                        ]"
+                        class="mr-2 h-5 w-5 "
+                        aria-hidden="true"
+                      />
+                      Delete <span class="text-red ml-1">{{ icon.name }}</span>?
+                    </button>
+                  </MenuItem>
+                  <MenuItem v-slot="{ active }">
+                    <button
+                      class="group flex w-full items-center rounded-md px-2 py-2 text-sm" :class="[
+                        active ? 'bg-light-primary text-white' : 'text-gray-900',
+                      ]"
+                    >
+                      <Icon
+                        name="ic:twotone-edit"
+                        :class="[
+                          active ? 'bg-light-primary text-white' : 'text-blue-500',
+                        ]"
+                        class="mr-2 h-5 w-5"
+                        aria-hidden="true"
+                      />
+                      Edit
+                    </button>
+                  </MenuItem>
+                </div>
+              </MenuItems>
+            </transition>
+          </Menu>
+        </ClientOnly>
+      </div>
     </div>
 
     <ClientOnly>
@@ -97,12 +184,12 @@ const addTechnology = async (icon: string, name: string) => {
                   class="w-full max-w-md p-6 overflow-hidden text-left align-middle transition-all transform bg-white shadow-xl rounded-2xl"
                 >
                   <div class="flex-auto w-full max-w-md p-6 mx-auto">
-                    <form @submit.prevent="addTechnology(icon, name)">
+                    <form @submit.prevent="addTechnology(iconId, iconName)">
                       <div class="mb-4">
-                        <BaseInput v-model="name" placeholder="name" />
+                        <BaseInput v-model="iconName" placeholder="name" />
                       </div>
                       <div class="mb-4">
-                        <BaseInput v-model="icon" placeholder="icon" />
+                        <BaseInput v-model="iconId" placeholder="icon" />
                       </div>
 
                       <div class="text-center">

@@ -21,7 +21,7 @@ export default defineConfig({
     colors: {
       veryCool: '#0000ff', // class="text-very-cool"
       light: {
-        primary: '#F9A30E',
+        primary: '#01DC82',
       },
       dark: {
         primary: '#0C0C0D',

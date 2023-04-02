@@ -19,3 +19,11 @@ export async function getTechnologys(): Promise<ITechnology[]> {
     },
   })
 }
+
+export async function deleteTechnology(id: string): Promise<void> {
+  await prisma.technology.delete({
+    where: {
+      id,
+    },
+  })
+}
