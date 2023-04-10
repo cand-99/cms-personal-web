@@ -32,7 +32,10 @@ model Project {
   id            String       @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   image         String
-  description   String
+  description_id   String
+  description_en   String
+  description_ja   String
+  description_ko   String
   dateStart     String
   dateEnd       String
   technologyIDs String[]     @db.ObjectId
