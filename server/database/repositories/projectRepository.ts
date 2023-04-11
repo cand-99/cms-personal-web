@@ -5,7 +5,6 @@ export async function createProject(data: IProject): Promise<IProject> {
   return await prisma.project.create({
     data: {
       name: data.name,
-      image: data.image,
       description_id: data.description_id,
       description_en: data.description_en,
       description_ja: data.description_ja,
@@ -26,12 +25,17 @@ export async function getProjects(lang: string): Promise <IProject[]> {
       description_en: lang === 'en',
       description_ja: lang === 'ja',
       description_ko: lang === 'ko',
-      image: true,
       technology: {
         select: {
           id: true,
           name: true,
           icon: true,
+        },
+      },
+      mediaFiles: {
+        select: {
+          url: true,
+          providerPublicId: true,
         },
       },
       dateStart: true,

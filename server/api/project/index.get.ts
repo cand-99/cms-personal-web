@@ -16,9 +16,9 @@ export default defineEventHandler(async (event) => {
     id: proj.id,
     name: proj.name,
     description: proj.description_id || proj.description_en || proj.description_ja || proj.description_ko,
-    image: proj.image,
     technology: proj.technology,
     dateStart: proj.dateStart,
     dateEnd: proj.dateEnd,
+    mediaFiles: proj.mediaFiles,
   }))
 })

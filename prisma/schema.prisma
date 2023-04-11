@@ -31,7 +31,6 @@ model Session {
 model Project {
   id            String       @id @default(auto()) @map("_id") @db.ObjectId
   name          String
-  image         String
   description_id   String
   description_en   String
   description_ja   String
@@ -42,6 +41,7 @@ model Project {
   technology    Technology[] @relation(fields: [technologyIDs], references: [id])
   createdAt     DateTime     @default(now())
   updatedAt     DateTime     @updatedAt
+  mediaFiles MediaFile?
 }
 
 model Technology {
@@ -51,3 +51,14 @@ model Technology {
   projectsIDs String[]  @db.ObjectId
   project     Project[] @relation(fields: [projectsIDs], references: [id])
 }
+
+model MediaFile {
+  id               String @id @default(auto()) @map("_id") @db.ObjectId
+  url              String
+  providerPublicId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  project   Project  @relation(fields: [projectId], references: [id])
+  projectId String @unique @db.ObjectId 
+}
+
