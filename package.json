@@ -12,6 +12,9 @@
   "dependencies": {
     "@prisma/client": "^4.11.0",
     "bcrypt": "^5.1.0",
+    "cloudinary": "^1.35.0",
+    "cloudinary-core": "^2.13.0",
+    "formidable": "^2.1.1",
     "uuid": "^9.0.0"
   },
   "devDependencies": {
@@ -19,6 +22,7 @@
     "@kevinmarrec/nuxt-pwa": "^0.15.0",
     "@nuxt/image-edge": "^1.0.0-27840416.dc1ed65",
     "@types/bcrypt": "^5.0.0",
+    "@types/formidable": "^2.0.5",
     "@types/uuid": "^9.0.1",
     "@unocss/nuxt": "^0.48.5",
     "@vueuse/core": "^9.11.1",
