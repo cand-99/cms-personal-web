@@ -43,6 +43,9 @@ onClickOutside(target, (event) => {
         <SidenavLink to="/technology" icons="material-symbols:add-home" :is-active="route.name === 'Technology'">
           Technology
         </SidenavLink>
+        <SidenavLink to="/project" icons="material-symbols:add-home" :is-active="route.name === 'Project'">
+          Project
+        </SidenavLink>
       </ul>
     </div>
 
