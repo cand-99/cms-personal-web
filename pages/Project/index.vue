@@ -77,9 +77,14 @@ const addProject = async () => {
 <template>
   <div>
     <div class="flex justify-between pb-4">
-      <button type="button" class="inline-block px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all bg-transparent border-0 rounded-lg cursor-pointer active:opacity-85 hover:scale-102 hover:shadow-soft-xs leading-pro text-xs ease-soft-in tracking-tight-soft shadow-soft-md bg-150 bg-x-25 bg-gradient-to-tl from-gray-900 to-slate-800 hover:border-slate-700 hover:bg-slate-700 hover:text-white disabled:cursor-not-allowed disabled:scale-100!" @click="openModal()">
-        Add new Project
-      </button>
+      <div>
+        <!-- <BaseButton type="button" @click="openModal()" class="block">
+          Add Project
+        </BaseButton> -->
+        <BaseButton to="/project/add" class="block">
+          Add Project
+        </BaseButton>
+      </div>
     </div>
 
     <pre>

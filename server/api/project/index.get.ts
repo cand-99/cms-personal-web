@@ -12,13 +12,13 @@ export default defineEventHandler(async (event) => {
 
   const projects: IProject[] = await getProjects(lang)
 
-  return projects.map(proj => ({
-    id: proj.id,
-    name: proj.name,
-    description: proj.description_id || proj.description_en || proj.description_ja || proj.description_ko,
-    technology: proj.technology,
-    dateStart: proj.dateStart,
-    dateEnd: proj.dateEnd,
-    mediaFiles: proj.mediaFiles,
+  return projects.map(project => ({
+    id: project.id,
+    name: project.name,
+    description: project.description_id || project.description_en || project.description_ja || project.description_ko,
+    technology: project.technology,
+    dateStart: project.dateStart,
+    dateEnd: project.dateEnd,
+    mediaFiles: project.mediaFiles,
   }))
 })

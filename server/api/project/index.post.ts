@@ -18,7 +18,7 @@ export default defineEventHandler(async (event) => {
   const { fields, files } = response as any
   const { name, description_id, description_en, description_ja, description_ko, dateStart, dateEnd, technologyIDs } = fields
 
-  if (!name || !description_id || !description_en || !description_ja || !description_ko || !dateStart || !dateEnd || !technologyIDs)
+  if (!name || !description_id || !description_en || !description_ja || !description_ko || !dateStart || !dateEnd || !technologyIDs || !files.file)
     return sendError(event, createError({ statusCode: 400, statusMessage: 'invalid input' }))
 
   const projectData = {
