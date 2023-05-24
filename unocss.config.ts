@@ -36,7 +36,7 @@ export default defineConfig({
       fonts: {
         // these will extend the default theme
         sans: {
-          name: 'Poppins',
+          name: 'Nunito',
           weights: ['400', '500', '600', '700'],
         },
       },

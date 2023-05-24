@@ -40,7 +40,10 @@ export default defineNuxtConfig({
 
   // nuxt-mage config
   image: {
-    // Options
+    cloudinary: {
+      // baseURL: 'https://res.cloudinary.com/<your-cloud-name>/image/upload/<mapping-folder>'
+      baseURL: 'https://res.cloudinary.com/dlgp7anbd/image/upload/v1682049469/',
+    },
   },
 
   // unocss config
