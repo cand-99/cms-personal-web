@@ -31,7 +31,7 @@ onClickOutside(target, (event) => {
     <div class="items-center block w-auto max-h-screen overflow-auto grow h-sidenav basis-full">
       <ul class="flex flex-col pl-0 mb-0 pb-14">
         <li class="w-full mt-4 mb-md">
-          <h6 class="pl-6 ml-2 font-bold leading-tight uppercase text-xs opacity-60">
+          <h6 class="pl-6 ml-2 font-bold leading-tight uppercase text-xs text-slate-600">
             Account pages
           </h6>
         </li>
@@ -51,7 +51,9 @@ onClickOutside(target, (event) => {
 
     <div class="mx-4 h-[220px] flex flex-col justify-end">
       <!-- pro btn  -->
-      <a class="inline-block w-full px-6 py-3 font-bold text-center text-white uppercase align-middle transition-all ease-in border-0 rounded-lg select-none shadow-soft-md bg-150 bg-x-25 leading-pro text-xs bg-gradient-to-tl gradient-brand hover:shadow-soft-2xl hover:scale-102 mt-auto" target="_blank" href="https://www.creative-tim.com/product/soft-ui-dashboard-pro-tailwind?ref=sidebarfree">Upgrade to pro</a>
+      <BaseButton type="button">
+        User
+      </BaseButton>
     </div>
   </aside>
 </template>

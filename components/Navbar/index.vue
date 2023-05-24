@@ -85,7 +85,7 @@ const handleLogout = async () => {
             </ClientOnly>
           </li>
           <li class="flex items-center xl:hidden">
-            <button type="button" class="block p-1 transition-all text-2xl text-slate-500" @click="sideNav = !sideNav">
+            <button type="button" class="block p-1 transition-all text-2xl text-slate-500" aria-label="menu button" @click="sideNav = !sideNav">
               <Icon name="heroicons-solid:menu" />
             </button>
           </li>

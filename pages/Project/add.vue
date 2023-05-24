@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { ITechnology } from '~/types/ITechnology'
+
 definePageMeta({
   middleware: 'auth',
 })
@@ -7,25 +9,26 @@ useHead({
 })
 const { toasts, showToast, removeToast, addToast, ToastType } = useToast()
 const { imageFile, imageUrl, errors, handleImageSelected } = useImageUpload()
+const { data: technologys, refresh } = await useFetch<ITechnology[]>('/api/technology')
 const loading = ref(false)
 const router = useRouter()
 
 const defaultProjectData = {
-  name: 'nama',
-  description_id: 'des indo',
-  description_en: 'des en',
-  description_ja: 'des ja',
-  description_ko: 'des ko',
-  dateStart: 'date start',
-  dateEnd: 'date end',
-  technologyIDs: '6428e3de694f9cbfa32a4857',
+  name: '',
+  description_id: '',
+  description_en: '',
+  description_ja: '',
+  description_ko: '',
+  dateStart: '',
+  dateEnd: '',
 }
 const project = reactive(defaultProjectData)
+const technologyIDs = reactive<string[]>([])
 
 const addProject = async () => {
   loading.value = true
   try {
-    const { name, description_id, description_en, description_ja, description_ko, dateStart, dateEnd, technologyIDs } = project
+    const { name, description_id, description_en, description_ja, description_ko, dateStart, dateEnd } = project
     const formData = new FormData()
     formData.append('name', name)
     formData.append('description_id', description_id)
@@ -34,7 +37,7 @@ const addProject = async () => {
     formData.append('description_ko', description_ko)
     formData.append('dateStart', dateStart)
     formData.append('dateEnd', dateEnd)
-    formData.append('technologyIDs', technologyIDs)
+    formData.append('technologyIDs', JSON.stringify(technologyIDs))
     formData.append('file', imageFile.value)
 
     const { data, error } = await useFetch('/api/project', {
@@ -54,6 +57,19 @@ const addProject = async () => {
   finally {
     loading.value = false
   }
+}
+
+function addTechnology(idTechnology: string) {
+  if (technologyIDs.includes(idTechnology))
+    technologyIDs.splice(technologyIDs.indexOf(idTechnology), 1)
+
+  else
+    technologyIDs.push(idTechnology)
+}
+
+const clearImage = () => {
+  imageUrl.value = ''
+  imageFile.value = ''
 }
 </script>
 
@@ -77,10 +93,22 @@ const addProject = async () => {
           </p>
 
           <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
-            <div class="sm:col-span-3">
+            <div class="sm:col-span-full">
               <label for="project-name" class="block text-sm font-medium leading-6 text-gray-900">Project Name</label>
               <div class="mt-2">
                 <BaseInput id="project-name" v-model="project.name" type="text" placeholder="Project Name" required />
+              </div>
+            </div>
+            <div class="sm:col-span-3">
+              <label for="date-start" class="block text-sm font-medium leading-6 text-gray-900">Date Start</label>
+              <div class="mt-2">
+                <BaseInput id="date-start" v-model="project.dateStart" type="text" placeholder="Date Start" required />
+              </div>
+            </div>
+            <div class="sm:col-span-3">
+              <label for="date-end" class="block text-sm font-medium leading-6 text-gray-900">Date End</label>
+              <div class="mt-2">
+                <BaseInput id="date-end" v-model="project.dateEnd" type="text" placeholder="Date End" required />
               </div>
             </div>
 
@@ -94,30 +122,39 @@ const addProject = async () => {
               </div>
             </div>
             <div class="sm:col-span-full">
-              <label for="project-description-id" class="block text-sm font-medium leading-6 text-gray-900">Project Description (EN) <Icon name="flagpack:gb-ukm" /> </label>
+              <label for="project-description-en" class="block text-sm font-medium leading-6 text-gray-900">Project Description (EN) <Icon name="flagpack:gb-ukm" /> </label>
               <div class="mt-2">
-                <BaseInput id="project-description-id" v-model="project.description_en" type="textarea" placeholder="Project Description (EN)" required />
+                <BaseInput id="project-description-en" v-model="project.description_en" type="textarea" placeholder="Project Description (EN)" required />
                 <p class="mt-3 text-sm leading-6 text-gray-600">
                   Write a few sentences about yourself.
                 </p>
               </div>
             </div>
             <div class="sm:col-span-full">
-              <label for="project-description-id" class="block text-sm font-medium leading-6 text-gray-900">Project Description (JA) <Icon name="twemoji:flag-japan" /> </label>
+              <label for="project-description-ja" class="block text-sm font-medium leading-6 text-gray-900">Project Description (JA) <Icon name="twemoji:flag-japan" /> </label>
               <div class="mt-2">
-                <BaseInput id="project-description-id" v-model="project.description_ja" type="textarea" placeholder="Project Description (JA)" required />
+                <BaseInput id="project-description-ja" v-model="project.description_ja" type="textarea" placeholder="Project Description (JA)" required />
                 <p class="mt-3 text-sm leading-6 text-gray-600">
                   Write a few sentences about yourself.
                 </p>
               </div>
             </div>
             <div class="sm:col-span-full">
-              <label for="project-description-id" class="block text-sm font-medium leading-6 text-gray-900">Project Description (KO) <Icon name="twemoji:flag-south-korea" /> </label>
+              <label for="project-description-ko" class="block text-sm font-medium leading-6 text-gray-900">Project Description (KO) <Icon name="twemoji:flag-south-korea" /> </label>
               <div class="mt-2">
-                <BaseInput id="project-description-id" v-model="project.description_ko" type="textarea" placeholder="Project Description (KO)" required />
+                <BaseInput id="project-description-ko" v-model="project.description_ko" type="textarea" placeholder="Project Description (KO)" required />
                 <p class="mt-3 text-sm leading-6 text-gray-600">
                   Write a few sentences about yourself.
                 </p>
+              </div>
+            </div>
+
+            <div class="sm:col-span-full">
+              <span class="block text-sm font-medium leading-6 text-gray-900">Technology </span>
+              <div class="mt-2 flex  space-x-2 text-4xl transition-all">
+                <button v-for="(technology, index) in technologys" :key="index" type="button" :class="technologyIDs.includes(technology?.id ?? '') ? 'text-green' : ''" @click="addTechnology(technology?.id ?? '') ">
+                  <Icon :name="technology.icon" />
+                </button>
               </div>
             </div>
 
@@ -132,12 +169,12 @@ const addProject = async () => {
                     <button
                       type="button"
                       class="absolute top-1 left-1 text-white text-xl h-7 w-7 rounded-full bg-gray-700 hover:bg-gray-900 inline-flex justify-center items-center transition-colors"
-                      @click="imageUrl = ''"
+                      @click="clearImage()"
                     >
                       <Icon name="material-symbols:close-rounded" />
                     </button>
                   </div>
-                  <svg v-else class="mx-auto h-24rem w-24rem text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                  <svg v-else class="mx-auto h-20rem w-20rem text-gray-300" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M1.5 6a2.25 2.25 0 012.25-2.25h16.5A2.25 2.25 0 0122.5 6v12a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V6zM3 16.06V18c0 .414.336.75.75.75h16.5A.75.75 0 0021 18v-1.94l-2.69-2.689a1.5 1.5 0 00-2.12 0l-.88.879.97.97a.75.75 0 11-1.06 1.06l-5.16-5.159a1.5 1.5 0 00-2.12 0L3 16.061zm10.125-7.81a1.125 1.125 0 112.25 0 1.125 1.125 0 01-2.25 0z" clip-rule="evenodd" />
                   </svg>
                   <div class="mt-4 flex text-sm leading-6 text-gray-600 justify-center">
@@ -160,7 +197,7 @@ const addProject = async () => {
       </div>
 
       <div class="mt-6 flex items-center justify-end gap-x-6">
-        <button type="button" class="text-sm font-semibold leading-6 text-gray-900" @click="router.back()">
+        <button type="button" class="text-sm font-semibold leading-6 text-gray-900 disabled:opacity-50 disabled:cursor-not-allowed" :disabled="loading" @click="router.back()">
           Cancel
         </button>
         <div>
