@@ -36,6 +36,7 @@ export async function getProjects(lang: string): Promise <IProject[]> {
         select: {
           url: true,
           providerPublicId: true,
+          format: true,
         },
       },
       dateStart: true,
@@ -43,6 +44,22 @@ export async function getProjects(lang: string): Promise <IProject[]> {
     },
   })
   return projects
+}
+
+export async function getProviderPublicId(id: string): Promise <string | undefined> {
+  const providerPublicId = await prisma.project.findUnique({
+    select: {
+      mediaFiles: {
+        select: {
+          providerPublicId: true,
+        },
+      },
+    },
+    where: {
+      id,
+    },
+  })
+  return providerPublicId?.mediaFiles?.providerPublicId
 }
 
 export async function deleteProject(id: string): Promise<void> {

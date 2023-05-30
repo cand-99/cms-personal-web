@@ -3,4 +3,5 @@ export interface IMediaFiles {
   url: string
   providerPublicId: string
   projectsId?: string
+  format: string
 }

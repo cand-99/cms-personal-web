@@ -23,7 +23,7 @@ export const uploadToCloudinary = (image: any) => {
   })
 }
 
-export const deleteImageCloudinary = (publicId: any) => {
+export const deleteImageCloudinary = (publicId: string) => {
   return new Promise((resolve, reject) => {
     cloudinary().uploader.destroy(publicId, (error: any, data: any) => {
       if (error)

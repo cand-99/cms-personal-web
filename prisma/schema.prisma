@@ -60,5 +60,6 @@ model MediaFile {
   updatedAt DateTime @updatedAt
   project   Project  @relation(fields: [projectId], references: [id])
   projectId String @unique @db.ObjectId 
+  format String
 }
 

@@ -78,7 +78,7 @@ const clearImage = () => {
     <div class="flex justify-between mb-8">
       <div>
         <BaseButton type="button" @click="router.back()">
-          go back
+          Go Back
         </BaseButton>
       </div>
     </div>

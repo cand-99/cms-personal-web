@@ -42,6 +42,7 @@ export default defineEventHandler(async (event) => {
       url: cloudinaryResource.secure_url,
       providerPublicId: cloudinaryResource.public_id,
       projectId: project.id,
+      format: cloudinaryResource.format,
     })
   })
 

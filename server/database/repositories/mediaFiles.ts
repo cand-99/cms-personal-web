@@ -4,3 +4,11 @@ export async function createMediaFile(mediaFile: any) {
     data: mediaFile,
   })
 }
+
+export async function deleteMediaFiles(projectId: string): Promise<void> {
+  await prisma.mediaFile.delete({
+    where: {
+      projectId,
+    },
+  })
+}
