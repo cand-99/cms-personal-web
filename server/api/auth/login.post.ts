@@ -1,6 +1,6 @@
 import bcrypt from 'bcrypt'
 import { getUserByUsername } from '~/server/database/repositories/userRepository'
-import { sendTelegram } from '~/server/service/sendTelegram'
+import { sendTelegram } from '~/server/utils/sendTelegram'
 import { makeSession } from '~~/server/service/sessionService'
 import { sanitizeUserForFrontend } from '~~/server/service/userService'
 
