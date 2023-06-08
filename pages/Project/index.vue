@@ -94,7 +94,7 @@ const deleteProject = async (projectId: string | undefined) => {
               </BaseButton>
             </div>
             <div class="flex gap-3">
-              <BaseButton :disabled="loading && (loadingDelete === project.id)" type="button" color="bg-blue-600" class="block" icon="ic:twotone-edit">
+              <BaseButton :to="`/project/edit/${project.id}`" :disabled="loading && (loadingDelete === project.id)" type="button" color="bg-blue-600" class="block" icon="ic:twotone-edit">
                 Edit
               </BaseButton>
               <BaseButton :loading="loading && (loadingDelete === project.id)" type="button" color="bg-red-600" class="block" icon="solar:trash-bin-trash-bold" @click="deleteProject(project.id)">

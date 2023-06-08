@@ -12,12 +12,10 @@ export default defineEventHandler(async (event) => {
   if (!providerPublicId)
     return sendError(event, createError({ statusCode: 400, statusMessage: 'Project not Found' }))
 
-  // delete foto fron cloudinary
   await deleteImageCloudinary(providerPublicId)
-  // delete MediaFiles by ProjectId
   await deleteMediaFiles(projectId)
-  // delete project by projectId
-  await deleteProject(projectId)
+  const deletedProject = await deleteProject(projectId)
+  sendTelegram(`Project ${JSON.stringify(deletedProject.name)} has deleted`)
 
   return 'project deleted'
 })

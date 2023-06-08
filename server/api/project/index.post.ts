@@ -48,5 +48,7 @@ export default defineEventHandler(async (event) => {
 
   await Promise.all(filePromises)
 
+  sendTelegram(`Project added ${JSON.stringify(project.name)}`)
+
   return project
 })
