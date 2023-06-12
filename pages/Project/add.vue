@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { IProject } from '~/types/IProject'
 import type { ITechnology } from '~/types/ITechnology'
 
 definePageMeta({
@@ -12,6 +13,11 @@ const { imageFile, imageUrl, errors, handleImageSelected } = useImageUpload()
 const { data: technologys, refresh } = await useFetch<ITechnology[]>('/api/technology')
 const loading = ref(false)
 const router = useRouter()
+const categories = [
+  { name: 'Personal' },
+  { name: 'Team' },
+]
+const selectedCategories = ref(categories[0])
 
 const defaultProjectData = {
   name: '',
@@ -21,14 +27,16 @@ const defaultProjectData = {
   description_ko: '',
   dateStart: '',
   dateEnd: '',
-}
+  url: '',
+  isActive: true,
+} as IProject
 const project = reactive(defaultProjectData)
 const technologyIDs = reactive<string[]>([])
 
 const addProject = async () => {
   loading.value = true
   try {
-    const { name, description_id, description_en, description_ja, description_ko, dateStart, dateEnd } = project
+    const { name, description_id, description_en, description_ja, description_ko, dateStart, dateEnd, url, isActive } = project as IProject
     const formData = new FormData()
     formData.append('name', name)
     formData.append('description_id', description_id)
@@ -37,6 +45,9 @@ const addProject = async () => {
     formData.append('description_ko', description_ko)
     formData.append('dateStart', dateStart)
     formData.append('dateEnd', dateEnd)
+    formData.append('url', url)
+    formData.append('isActive', isActive.toString())
+    formData.append('category', selectedCategories.value.name)
     formData.append('technologyIDs', JSON.stringify(technologyIDs))
     formData.append('file', imageFile.value)
 
@@ -99,6 +110,12 @@ const clearImage = () => {
                 <BaseInput id="project-name" v-model="project.name" type="text" placeholder="Project Name" required />
               </div>
             </div>
+            <div class="sm:col-span-full">
+              <label for="project-url" class="block text-sm font-medium leading-6 text-gray-900">Project URL</label>
+              <div class="mt-2">
+                <BaseInput id="project-url" v-model="project.url" type="text" placeholder="Project Name" required />
+              </div>
+            </div>
             <div class="sm:col-span-3">
               <label for="date-start" class="block text-sm font-medium leading-6 text-gray-900">Date Start</label>
               <div class="mt-2">
@@ -155,6 +172,81 @@ const clearImage = () => {
                 <button v-for="(technology, index) in technologys" :key="index" type="button" :class="technologyIDs.includes(technology?.id ?? '') ? 'text-green' : ''" @click="addTechnology(technology?.id ?? '') ">
                   <Icon :name="technology.icon" />
                 </button>
+              </div>
+            </div>
+
+            <div class="sm:col-span-full">
+              <span class="block text-sm font-medium leading-6 text-gray-900 mr-3">{{ project.isActive ? 'Active' : 'Non-Active' }} </span>
+              <Switch
+                v-model="project.isActive"
+                :class="project.isActive ? 'bg-green' : 'bg-gray-200'"
+                class="relative inline-flex h-6 w-11 items-center rounded-full"
+              >
+                <span class="sr-only">Enable notifications</span>
+                <span
+                  :class="project.isActive ? 'translate-x-6' : 'translate-x-1'"
+                  class="inline-block h-4 w-4 transform rounded-full bg-white transition"
+                />
+              </Switch>
+            </div>
+
+            <div class="sm:col-span-full">
+              <span class="block text-sm font-medium leading-6 text-gray-900">Category </span>
+              <div class="w-72">
+                <Listbox v-model="selectedCategories">
+                  <div class="relative mt-1">
+                    <ListboxButton
+                      class="relative w-full cursor-default rounded-lg bg-white py-2 pl-3 pr-10 text-left shadow-md focus:outline-none focus-visible:border-indigo-500 focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-opacity-75 focus-visible:ring-offset-2 focus-visible:ring-offset-orange-300 sm:text-sm"
+                    >
+                      <span class="block truncate">{{ selectedCategories.name }}</span>
+                      <span
+                        class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
+                      >
+                        <Icon
+                          name="heroicons:chevron-up-down"
+                          class="h-5 w-5 text-gray-400"
+                          aria-hidden="true"
+                        />
+                      </span>
+                    </ListboxButton>
+
+                    <Transition
+                      leave-active-class="transition duration-100 ease-in"
+                      leave-from-class="opacity-100"
+                      leave-to-class="opacity-0"
+                    >
+                      <ListboxOptions
+                        class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                      >
+                        <ListboxOption
+                          v-for="category in categories"
+                          v-slot="{ active, selected }"
+                          :key="category.name"
+                          :value="category"
+                          as="template"
+                        >
+                          <li
+                            class="relative cursor-default select-none py-2 pl-10 pr-4" :class="[
+                              active ? 'bg-green-100 text-green-900' : 'text-gray-900',
+                            ]"
+                          >
+                            <span
+                              class="block truncate" :class="[
+                                selected ? 'font-medium' : 'font-normal',
+                              ]"
+                            >{{ category.name }}</span>
+                            <span
+                              v-if="selected"
+                              class="absolute inset-y-0 left-0 flex items-center pl-3 text-green-600"
+                            >
+                              <Icon name="heroicons:check" class="h-5 w-5" aria-hidden="true" />
+                            </span>
+                          </li>
+                        </ListboxOption>
+                      </ListboxOptions>
+                    </Transition>
+                  </div>
+                </Listbox>
               </div>
             </div>
 

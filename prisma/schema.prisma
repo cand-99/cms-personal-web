@@ -28,20 +28,28 @@ model Session {
   updatedAt DateTime @updatedAt
 }
 
+enum Category {
+  Personal
+  Team
+}
+
 model Project {
-  id            String       @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  description_id   String
-  description_en   String
-  description_ja   String
-  description_ko   String
-  dateStart     String
-  dateEnd       String
-  technologyIDs String[]     @db.ObjectId
-  technology    Technology[] @relation(fields: [technologyIDs], references: [id])
-  createdAt     DateTime     @default(now())
-  updatedAt     DateTime     @updatedAt
-  mediaFiles MediaFile?
+  id             String       @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  description_id String
+  description_en String
+  description_ja String
+  description_ko String
+  dateStart      String
+  dateEnd        String
+  url            String
+  isActive       Boolean @default(true)
+  category       Category   
+  technologyIDs  String[]     @db.ObjectId
+  technology     Technology[] @relation(fields: [technologyIDs], references: [id])
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  mediaFiles     MediaFile?
 }
 
 model Technology {
@@ -53,13 +61,12 @@ model Technology {
 }
 
 model MediaFile {
-  id               String @id @default(auto()) @map("_id") @db.ObjectId
+  id               String   @id @default(auto()) @map("_id") @db.ObjectId
   url              String
   providerPublicId String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  project   Project  @relation(fields: [projectId], references: [id])
-  projectId String @unique @db.ObjectId 
-  format String
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  project          Project  @relation(fields: [projectId], references: [id])
+  projectId        String   @unique @db.ObjectId
+  format           String
 }
-

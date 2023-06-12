@@ -1,5 +1,6 @@
 import type { IMediaFiles } from './IMediaFiles'
 import type { ITechnology } from '~~/types/ITechnology'
+
 export interface IProject {
   id?: string
   name: string
@@ -10,6 +11,9 @@ export interface IProject {
   description_ko: string
   dateStart: string
   dateEnd: string
+  url: string
+  isActive: boolean
+  category: 'Personal' | 'Team'
   technologyIDs?: string[] | undefined
   technology?: ITechnology[]
   mediaFiles?: IMediaFiles | null

@@ -20,5 +20,8 @@ export default defineEventHandler(async (event) => {
     dateStart: project.dateStart,
     dateEnd: project.dateEnd,
     mediaFiles: project.mediaFiles,
-  }))
+    url: project.url,
+    isActive: project.isActive,
+    category: project.category,
+  } as IProject))
 })

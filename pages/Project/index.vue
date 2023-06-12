@@ -106,9 +106,9 @@ const deleteProject = async (projectId: string | undefined) => {
       </div>
     </div>
 
-    <pre>
+    <!-- <pre>
       {{ projects }}
-    </pre>
+    </pre> -->
 
     <!-- Toasts -->
     <Transition>

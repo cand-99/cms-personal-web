@@ -12,6 +12,9 @@ export async function createProject(data: IProject): Promise<IProject> {
       dateStart: data.dateStart,
       dateEnd: data.dateEnd,
       technologyIDs: data.technologyIDs,
+      url: data.url,
+      isActive: data.isActive,
+      category: data.category,
     },
   })
 }
@@ -30,6 +33,9 @@ export async function updateProject(id: string, data: IProject) {
       dateStart: data.dateStart,
       dateEnd: data.dateEnd,
       technologyIDs: data.technologyIDs,
+      url: data.url,
+      isActive: data.isActive,
+      category: data.category,
     },
   })
 }
@@ -43,6 +49,9 @@ export async function getProjects(lang: string): Promise <IProject[]> {
       description_en: lang === 'en',
       description_ja: lang === 'ja',
       description_ko: lang === 'ko',
+      url: true,
+      isActive: true,
+      category: true,
       technology: {
         select: {
           id: true,
@@ -97,6 +106,9 @@ export async function projectById(id: string): Promise<IProject | null> {
       description_ja: true,
       description_ko: true,
       technologyIDs: true,
+      url: true,
+      isActive: true,
+      category: true,
       mediaFiles: {
         select: {
           url: true,

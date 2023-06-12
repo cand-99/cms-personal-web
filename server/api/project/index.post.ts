@@ -16,9 +16,9 @@ export default defineEventHandler(async (event) => {
   })
 
   const { fields, files } = response as any
-  const { name, description_id, description_en, description_ja, description_ko, dateStart, dateEnd, technologyIDs } = fields
+  const { name, description_id, description_en, description_ja, description_ko, dateStart, dateEnd, technologyIDs, url, isActive, category } = fields
 
-  if (!name || !description_id || !description_en || !description_ja || !description_ko || !dateStart || !dateEnd || !JSON.parse(technologyIDs).length || !files.file)
+  if (!name || !description_id || !description_en || !description_ja || !description_ko || !dateStart || !dateEnd || !url || !isActive || !category || !JSON.parse(technologyIDs).length || !files.file)
     return sendError(event, createError({ statusCode: 400, statusMessage: 'invalid input' }))
 
   const projectData = {
@@ -29,6 +29,9 @@ export default defineEventHandler(async (event) => {
     description_ko,
     dateStart,
     dateEnd,
+    url,
+    isActive: !(isActive === 'false'),
+    category,
     technologyIDs: JSON.parse(technologyIDs),
   } as IProject
 
