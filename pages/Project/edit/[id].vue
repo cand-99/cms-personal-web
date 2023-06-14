@@ -19,7 +19,7 @@ const { data } = await useFetch<IProject>(`/api/project/${route.params.id}`)
 
 const categories = [
   { name: data.value?.category === 'Personal' ? 'Personal' : 'Team' },
-  { name: data.value?.category === 'Team' ? 'Team' : 'Personal' },
+  { name: data.value?.category === 'Personal' ? 'Team' : 'Personal' },
 ]
 const selectedCategories = ref(categories[0])
 
