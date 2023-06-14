@@ -71,8 +71,8 @@ const deleteProject = async (projectId: string | undefined) => {
             <h1 class="text-lg md:text-3xl font-bold">
               {{ project.name }}
             </h1>
-            <span v-if="project.isActive" class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Acive</span>
-            <span v-else class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Non-Acive</span>
+            <span v-if="project.isActive" class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Active</span>
+            <span v-else class="inline-flex items-center rounded-md bg-red-50 px-2 py-1 text-xs font-medium text-red-700 ring-1 ring-inset ring-red-600/20">Non-Active</span>
           </div>
           <p class="mt-3">
             {{ project.description }}
