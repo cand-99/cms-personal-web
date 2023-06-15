@@ -62,8 +62,11 @@ const deleteProject = async (projectId: string | undefined) => {
         <figure class="overflow-hidden md:w-1/2">
           <NuxtImg
             class="rounded-2xl"
-            loading="lazy" format="webp" provider="cloudinary" :src="`${project.mediaFiles?.providerPublicId}.${project.mediaFiles?.format}`"
-            width="100%" height="100%" :alt="project.name"
+            preload
+            quality="80"
+            sizes="sm:100vw md:50vw"
+            format="webp" provider="cloudinary" :src="`${project.mediaFiles?.providerPublicId}.${project.mediaFiles?.format}`"
+            :alt="project.name"
           />
         </figure>
         <div class="md:w-1/2 mt-3 md:mt-0 flex flex-col">

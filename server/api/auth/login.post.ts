@@ -18,7 +18,11 @@ export default defineEventHandler(async (event) => {
   if (!isPasswordCorrect)
     return sendError(event, createError({ statusCode: 401, statusMessage: 'Unauthenticated' }))
 
-  sendTelegram(`User Login : ${JSON.stringify(user.name)}`)
+  const userAgent = event.node.req.headers['user-agent']
+  const host = event.node.req.headers.host
+  const ip = event.node.req.headers['x-forwarded-for']
+
+  sendTelegram(`--User Login--\n name: ${JSON.stringify(user.name)}\n User Agent: ${userAgent}\n host: ${host}\n ip: ${ip}`)
 
   await makeSession(user, event)
 

@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { IUser } from '~/types/IUser'
+
 definePageMeta({
   alias: '/dashboard',
   name: 'Dashboard',
@@ -8,7 +10,7 @@ useHead({
   title: 'Dashboard',
 })
 
-const user = useState('user')
+const user = useState<IUser>('user')
 </script>
 
 <template>
@@ -26,7 +28,7 @@ const user = useState('user')
                     Today's Money
                   </p>
                   <h5 class="mb-0 font-bold">
-                    {{ user }}
+                    {{ user.name }}
                   </h5>
                 </div>
               </div>
@@ -48,7 +50,7 @@ const user = useState('user')
               <div class="flex-none w-2/3 max-w-full px-3">
                 <div>
                   <p class="mb-0 font-sans font-semibold leading-normal text-sm">
-                    Today's Users
+                    Today's Visitor
                   </p>
                   <h5 class="mb-0 font-bold">
                     2,300
@@ -74,7 +76,7 @@ const user = useState('user')
               <div class="flex-none w-2/3 max-w-full px-3">
                 <div>
                   <p class="mb-0 font-sans font-semibold leading-normal text-sm">
-                    New Clients
+                    Total Project
                   </p>
                   <h5 class="mb-0 font-bold">
                     +3,462
@@ -100,7 +102,7 @@ const user = useState('user')
               <div class="flex-none w-2/3 max-w-full px-3">
                 <div>
                   <p class="mb-0 font-sans font-semibold leading-normal text-sm">
-                    Sales
+                    Total Blog
                   </p>
                   <h5 class="mb-0 font-bold">
                     $103,430
