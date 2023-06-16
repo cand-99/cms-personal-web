@@ -10,7 +10,7 @@ export default defineEventHandler(async (event) => {
 })
 
 async function protectAuthRoute(event: any): Promise<boolean> {
-  const token: any = getCookie(event, 'auth_token')
+  const token: string | undefined = getCookie(event, 'auth_token')
 
   const protectedRoutes = [
     '/api/project*',
@@ -31,7 +31,7 @@ async function protectAuthRoute(event: any): Promise<boolean> {
   return await authCheck(token)
 }
 
-async function authCheck(token: string): Promise<boolean> {
+async function authCheck(token: string | undefined): Promise<boolean> {
   if (!token)
     return false
   const user = await getSessionByAuthToken(token)
