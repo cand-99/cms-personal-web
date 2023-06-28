@@ -13,8 +13,8 @@ async function protectAuthRoute(event: any): Promise<boolean> {
   const token: string | undefined = getCookie(event, 'auth_token')
 
   const protectedRoutes = [
-    '/api/project/*',
-    '/api/technology/*',
+    '/api/project*',
+    '/api/technology*',
     '/api/auth/logout',
     '/api/auth/register*',
   ]

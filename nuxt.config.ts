@@ -34,6 +34,13 @@ export default defineNuxtConfig({
   headlessui: {
     prefix: '',
   },
+  routeRules: {
+    '/api/**': {
+      ssr: true,
+      cors: true,
+      // proxy: 'http://localhost:3000/**',
+    },
+  },
 
   app: {
     pageTransition: { name: 'fade', mode: 'out-in' },
