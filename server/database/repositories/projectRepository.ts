@@ -73,6 +73,42 @@ export async function getProjects(lang: string): Promise <IProject[]> {
   return projects
 }
 
+export async function getActiveProjects(lang: string): Promise<IProject[]> {
+  const projects = await prisma.project.findMany({
+    where: {
+      isActive: true,
+    },
+    select: {
+      id: true,
+      name: true,
+      description_id: lang === 'id',
+      description_en: lang === 'en',
+      description_ja: lang === 'ja',
+      description_ko: lang === 'ko',
+      url: true,
+      isActive: true,
+      category: true,
+      technology: {
+        select: {
+          id: true,
+          name: true,
+          icon: true,
+        },
+      },
+      mediaFiles: {
+        select: {
+          url: true,
+          providerPublicId: true,
+          format: true,
+        },
+      },
+      dateStart: true,
+      dateEnd: true,
+    },
+  })
+  return projects
+}
+
 export async function getProviderPublicId(id: string): Promise <string | undefined> {
   const providerPublicId = await prisma.project.findUnique({
     select: {

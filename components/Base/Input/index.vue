@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 interface IProps {
   modelValue: string
-  type?: string
+  type?: 'text' | 'email' | 'textarea' | 'password'
   placeholder: string
   required?: boolean
 }

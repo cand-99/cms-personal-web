@@ -51,10 +51,10 @@ const handleLogin = async (username: string, password: string) => {
           <div class="flex-auto p-6">
             <form @submit.prevent="handleLogin(username, password)">
               <div class="mb-4">
-                <BaseInput v-model="username" placeholder="username" />
+                <BaseInput v-model="username" placeholder="username" required />
               </div>
               <div class="mb-4">
-                <BaseInput v-model="password" type="password" placeholder="password" />
+                <BaseInput v-model="password" type="password" placeholder="password" required />
               </div>
               <div class="text-center">
                 <BaseButton type="submit" :loading="loading">
