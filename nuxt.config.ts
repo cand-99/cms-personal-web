@@ -37,7 +37,7 @@ export default defineNuxtConfig({
   routeRules: {
     '/api/**': {
       ssr: true,
-      cors: true,
+      cors: false,
       // proxy: 'http://localhost:3000/**',
     },
   },
